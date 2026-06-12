@@ -23,12 +23,12 @@
 
                 <label class="block">
                     <span class="text-sm text-slate-300">Nova senha</span>
-                    <input type="password" name="senha" class="mt-2 w-full rounded-3xl border border-slate-800 bg-slate-950 px-4 py-3 text-slate-100 outline-none" />
+                    <input type="password" name="password" class="mt-2 w-full rounded-3xl border border-slate-800 bg-slate-950 px-4 py-3 text-slate-100 outline-none" />
                 </label>
 
                 <label class="block">
                     <span class="text-sm text-slate-300">Confirme a nova senha</span>
-                    <input type="password" name="senha_confirmation" class="mt-2 w-full rounded-3xl border border-slate-800 bg-slate-950 px-4 py-3 text-slate-100 outline-none" />
+                    <input type="password" name="password_confirmation" class="mt-2 w-full rounded-3xl border border-slate-800 bg-slate-950 px-4 py-3 text-slate-100 outline-none" />
                 </label>
 
                 @if ($errors->any())

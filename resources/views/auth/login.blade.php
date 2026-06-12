@@ -19,7 +19,7 @@
 
         <label class="block">
             <span class="text-sm text-slate-300">Senha</span>
-            <input type="password" name="senha" required class="mt-2 w-full rounded-3xl border border-slate-800 bg-slate-950 px-4 py-3 text-slate-100 outline-none transition focus:border-sky-400" />
+            <input type="password" name="password" required class="mt-2 w-full rounded-3xl border border-slate-800 bg-slate-950 px-4 py-3 text-slate-100 outline-none transition focus:border-sky-400" />
         </label>
 
         <div class="flex items-center justify-between text-sm text-slate-400">

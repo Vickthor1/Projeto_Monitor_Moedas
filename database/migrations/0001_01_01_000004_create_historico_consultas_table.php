@@ -20,7 +20,7 @@ return new class extends Migration
             $table->decimal('valor_convertido', 15, 2);
             $table->decimal('taxa_cambio', 18, 8);
             $table->dateTime('data_consulta');
-            $table->timestamp('created_at')->nullable();
+            $table->timestamps();
         });
     }
 
