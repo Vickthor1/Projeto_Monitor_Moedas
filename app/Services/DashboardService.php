@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Usuario;
 use App\Repositories\HistoricoConsultaRepository;
+use App\Services\ExchangeRateService;
 use Throwable;
 
 class DashboardService

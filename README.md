@@ -43,14 +43,14 @@ Aplicação Laravel para monitoramento e histórico de conversões de moedas int
    ```bash
    php artisan key:generate
    ```
-5. Crie o banco de dados MySQL e importe o script:
+5. Crie o banco de dados MySQL e importe o script SQL manualmente:
    ```bash
    mysql -u root -p -e "CREATE DATABASE IF NOT EXISTS projeto_monitor_moedas CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
    mysql -u root -p projeto_monitor_moedas < database/banco.sql
    ```
 
 ## Usuário de exemplo
-- E-mail: `admin@local`
+- E-mail: `admin@monitor.com`
 - Senha: `admin123`
 
 ## Executando a aplicação

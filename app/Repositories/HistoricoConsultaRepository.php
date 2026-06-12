@@ -18,12 +18,12 @@ class HistoricoConsultaRepository
             $query->where(function ($query) use ($search) {
                 $query->whereRaw('LOWER(moeda_origem) LIKE ?', [$search])
                     ->orWhereRaw('LOWER(moeda_destino) LIKE ?', [$search])
-                    ->orWhereRaw('CAST(valor_consulta AS CHAR) LIKE ?', [$search])
+                    ->orWhereRaw('CAST(valor_origem AS CHAR) LIKE ?', [$search])
                     ->orWhereRaw('CAST(valor_convertido AS CHAR) LIKE ?', [$search]);
             });
         }
 
-        $sortField = in_array($filters['sort_field'] ?? '', ['data_consulta', 'moeda_origem', 'moeda_destino', 'valor_consulta', 'valor_convertido'])
+        $sortField = in_array($filters['sort_field'] ?? '', ['data_consulta', 'moeda_origem', 'moeda_destino', 'valor_origem', 'valor_convertido'])
             ? $filters['sort_field']
             : 'data_consulta';
         $sortDirection = ($filters['sort_direction'] ?? 'desc') === 'asc' ? 'asc' : 'desc';

@@ -6,81 +6,90 @@
     <title>@yield('title', 'Monitor de Moedas')</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="min-h-screen bg-slate-950 text-slate-100" data-theme="dark">
-    <div class="flex min-h-screen">
-        <aside class="hidden xl:flex w-80 flex-col bg-slate-900 border-r border-slate-800">
-            <div class="px-8 py-8 border-b border-slate-800">
-                <div class="text-sm font-semibold uppercase tracking-[0.3em] text-sky-400">Monitor Moedas</div>
-                <div class="mt-3 text-3xl font-bold">Dashboard</div>
-                <p class="mt-2 text-slate-400">Painel de cotações e histórico de conversões.</p>
+<body class="min-h-screen text-slate-100" data-theme="dark">
+    <div class="app-grid">
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <div class="brand-mark">MM</div>
+                <div>
+                    <p class="text-sm uppercase tracking-[0.35em] text-cyan-300/80">Monitor</p>
+                    <p class="text-2xl font-semibold text-white">Moedas</p>
+                </div>
             </div>
 
-            <nav class="flex-1 px-6 py-8 space-y-2">
-                <a href="{{ route('dashboard') }}" class="block rounded-3xl px-4 py-3 text-sm font-medium transition hover:bg-slate-800 {{ request()->routeIs('dashboard') ? 'bg-slate-800 text-white' : 'text-slate-300' }}">Dashboard</a>
-                <a href="{{ route('moeda.index') }}" class="block rounded-3xl px-4 py-3 text-sm font-medium transition hover:bg-slate-800 {{ request()->routeIs('moeda.*') ? 'bg-slate-800 text-white' : 'text-slate-300' }}">Consultar Moedas</a>
-                <a href="{{ route('historico.index') }}" class="block rounded-3xl px-4 py-3 text-sm font-medium transition hover:bg-slate-800 {{ request()->routeIs('historico.*') ? 'bg-slate-800 text-white' : 'text-slate-300' }}">Histórico</a>
-                <a href="{{ route('perfil.edit') }}" class="block rounded-3xl px-4 py-3 text-sm font-medium transition hover:bg-slate-800 {{ request()->routeIs('perfil.*') ? 'bg-slate-800 text-white' : 'text-slate-300' }}">Perfil</a>
-                <form method="POST" action="{{ route('logout') }}" class="mt-8">
-                    @csrf
-                    <button type="submit" class="w-full rounded-3xl bg-slate-800 px-4 py-3 text-left text-sm font-medium text-slate-200 transition hover:bg-slate-700">Sair</button>
-                </form>
+            <nav class="grid gap-2">
+                <a href="{{ route('dashboard') }}" class="nav-item {{ request()->routeIs('dashboard') ? 'active' : '' }}" aria-label="Navegar para dashboard">
+                    @include('components.nav-icon', ['name' => 'grid'])
+                    <span>Dashboard</span>
+                </a>
+                <a href="{{ route('moeda.index') }}" class="nav-item {{ request()->routeIs('moeda.*') ? 'active' : '' }}" aria-label="Navegar para consultar moedas">
+                    @include('components.nav-icon', ['name' => 'arrows'])
+                    <span>Conversão</span>
+                </a>
+                <a href="{{ route('historico.index') }}" class="nav-item {{ request()->routeIs('historico.*') ? 'active' : '' }}" aria-label="Navegar para histórico de consultas">
+                    @include('components.nav-icon', ['name' => 'clock'])
+                    <span>Histórico</span>
+                </a>
+                <a href="{{ route('perfil.edit') }}" class="nav-item {{ request()->routeIs('perfil.*') ? 'active' : '' }}" aria-label="Navegar para perfil do usuário">
+                    @include('components.nav-icon', ['name' => 'user'])
+                    <span>Perfil</span>
+                </a>
             </nav>
 
-            <div class="px-6 py-6 border-t border-slate-800 text-sm text-slate-400">
-                <p>Conectado como</p>
+            <form method="POST" action="{{ route('logout') }}" class="mt-6">
+                @csrf
+                <button type="submit" class="btn-ghost w-full text-left">@include('components.nav-icon', ['name' => 'logout']) Sair</button>
+            </form>
+
+            <div class="sidebar-footer">
+                <p class="text-xs uppercase tracking-[0.25em] text-slate-500">Conectado como</p>
                 <p class="mt-2 font-semibold text-white">{{ auth()->user()->nome }}</p>
             </div>
         </aside>
 
-        <div class="flex-1">
-            <header class="sticky top-0 z-20 border-b border-slate-800 bg-slate-950/95 backdrop-blur-xl px-4 py-4 xl:px-8">
-                <div class="flex items-center justify-between gap-3">
+        <div class="app-main">
+            <header class="topbar">
+                <div class="flex items-center gap-4">
+                    <button id="mobileMenuToggle" type="button" class="btn-ghost hidden-desktop">Menu</button>
                     <div>
-                        <p class="text-sm uppercase tracking-[0.3em] text-sky-400">Painel</p>
-                        <h1 class="mt-2 text-3xl font-bold">Controle de Moedas</h1>
+                        <p class="text-sm uppercase tracking-[0.35em] text-slate-400">Dashboard</p>
+                        <h1 class="text-2xl font-semibold text-white">Painel Monitor de Moedas</h1>
                     </div>
-                    <div class="flex items-center gap-3">
-                        <button id="themeToggle" type="button" class="inline-flex items-center gap-2 rounded-3xl border border-slate-800 bg-slate-900 px-4 py-3 text-sm text-slate-200 transition hover:bg-slate-800">
-                            <span id="themeIcon">🌙</span>
-                            <span class="hidden sm:inline">Tema</span>
-                        </button>
-                        <button id="mobileMenuToggle" type="button" class="inline-flex xl:hidden items-center gap-2 rounded-3xl border border-slate-800 bg-slate-900 px-4 py-3 text-sm text-slate-200 transition hover:bg-slate-800">
-                            <span>Menu</span>
-                        </button>
-                        <div class="rounded-3xl bg-slate-900 px-4 py-3 text-sm text-slate-200 shadow-lg shadow-slate-950/20">{{ date('d/m/Y H:i') }}</div>
-                    </div>
+                </div>
+                <div class="flex flex-wrap items-center gap-3">
+                    <button id="themeToggle" type="button" class="btn-ghost rounded-full px-4 py-3" aria-label="Alternar tema">
+                        <span id="themeIcon">🌙</span>
+                    </button>
+                    <div class="rounded-3xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-slate-200">{{ date('d/m/Y H:i') }}</div>
                 </div>
             </header>
 
-            <div id="mobileMenu" class="fixed inset-0 z-40 hidden bg-slate-950/90 backdrop-blur-xl xl:hidden">
-                <div class="flex h-full flex-col overflow-hidden bg-slate-950 shadow-2xl">
-                    <div class="flex items-center justify-between border-b border-slate-800 px-5 py-4">
+            <div id="mobileDrawer" class="mobile-drawer" aria-hidden="true">
+                <div class="mobile-panel glass-card">
+                    <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-sm uppercase tracking-[0.3em] text-sky-400">Navegação</p>
-                            <h2 class="mt-2 text-xl font-semibold text-white">Menu móvel</h2>
+                            <p class="text-sm uppercase tracking-[0.35em] text-cyan-300/80">Menu</p>
+                            <h2 class="text-xl font-semibold text-white">Navegação</h2>
                         </div>
-                        <button id="mobileMenuClose" type="button" class="rounded-3xl border border-slate-800 bg-slate-900 px-3 py-2 text-sm text-slate-200 transition hover:bg-slate-800">Fechar</button>
+                        <button id="mobileMenuClose" type="button" class="btn-ghost" aria-label="Fechar menu móvel">Fechar</button>
                     </div>
-                    <nav class="flex-1 space-y-3 overflow-y-auto px-5 py-6">
-                        <a href="{{ route('dashboard') }}" class="block rounded-3xl px-4 py-4 text-sm font-medium transition hover:bg-slate-800 {{ request()->routeIs('dashboard') ? 'bg-slate-800 text-white' : 'text-slate-300' }}">Dashboard</a>
-                        <a href="{{ route('moeda.index') }}" class="block rounded-3xl px-4 py-4 text-sm font-medium transition hover:bg-slate-800 {{ request()->routeIs('moeda.*') ? 'bg-slate-800 text-white' : 'text-slate-300' }}">Consultar Moedas</a>
-                        <a href="{{ route('historico.index') }}" class="block rounded-3xl px-4 py-4 text-sm font-medium transition hover:bg-slate-800 {{ request()->routeIs('historico.*') ? 'bg-slate-800 text-white' : 'text-slate-300' }}">Histórico</a>
-                        <a href="{{ route('perfil.edit') }}" class="block rounded-3xl px-4 py-4 text-sm font-medium transition hover:bg-slate-800 {{ request()->routeIs('perfil.*') ? 'bg-slate-800 text-white' : 'text-slate-300' }}">Perfil</a>
-                        <form method="POST" action="{{ route('logout') }}" class="mt-4">
+                    <nav class="mt-8 grid gap-3">
+                        <a href="{{ route('dashboard') }}" class="nav-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">@include('components.nav-icon', ['name' => 'grid']) Dashboard</a>
+                        <a href="{{ route('moeda.index') }}" class="nav-item {{ request()->routeIs('moeda.*') ? 'active' : '' }}">@include('components.nav-icon', ['name' => 'arrows']) Conversão</a>
+                        <a href="{{ route('historico.index') }}" class="nav-item {{ request()->routeIs('historico.*') ? 'active' : '' }}">@include('components.nav-icon', ['name' => 'clock']) Histórico</a>
+                        <a href="{{ route('perfil.edit') }}" class="nav-item {{ request()->routeIs('perfil.*') ? 'active' : '' }}">@include('components.nav-icon', ['name' => 'user']) Perfil</a>
+                        <form method="POST" action="{{ route('logout') }}">
                             @csrf
-                            <button type="submit" class="w-full rounded-3xl bg-slate-800 px-4 py-4 text-left text-sm font-medium text-slate-200 transition hover:bg-slate-700">Sair</button>
+                            <button type="submit" class="btn-ghost w-full text-left">@include('components.nav-icon', ['name' => 'logout']) Sair</button>
                         </form>
                     </nav>
-                    <div class="border-t border-slate-800 px-5 py-5 text-sm text-slate-400">
-                        <p>Conectado como</p>
-                        <p class="mt-2 font-semibold text-white">{{ auth()->user()->nome }}</p>
-                    </div>
                 </div>
             </div>
 
-            <main class="p-4 sm:p-6 lg:p-8">
+            <main class="main-content">
+                <div class="toast-container" aria-live="polite" aria-atomic="true"></div>
                 @if(session('success'))
-                    <div class="mb-6 rounded-3xl bg-emerald-500/10 border border-emerald-500/20 p-4 text-sm text-emerald-200">
+                    <div class="card mb-6 border-cyan-500/20 bg-cyan-500/10 p-4 text-slate-50">
                         {{ session('success') }}
                     </div>
                 @endif

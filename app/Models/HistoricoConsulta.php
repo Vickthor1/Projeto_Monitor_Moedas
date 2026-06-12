@@ -16,14 +16,14 @@ class HistoricoConsulta extends Model
         'usuario_id',
         'moeda_origem',
         'moeda_destino',
-        'valor_consulta',
+        'valor_origem',
         'valor_convertido',
         'taxa_cambio',
         'data_consulta',
     ];
 
     protected $casts = [
-        'valor_consulta' => 'decimal:2',
+        'valor_origem' => 'decimal:2',
         'valor_convertido' => 'decimal:2',
         'taxa_cambio' => 'decimal:8',
         'data_consulta' => 'datetime',

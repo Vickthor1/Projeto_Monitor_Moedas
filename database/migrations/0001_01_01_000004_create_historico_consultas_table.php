@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('usuario_id')->constrained('usuarios')->cascadeOnDelete();
             $table->string('moeda_origem');
             $table->string('moeda_destino');
-            $table->decimal('valor_consulta', 15, 2);
+            $table->decimal('valor_origem', 15, 2);
             $table->decimal('valor_convertido', 15, 2);
             $table->decimal('taxa_cambio', 18, 8);
             $table->dateTime('data_consulta');

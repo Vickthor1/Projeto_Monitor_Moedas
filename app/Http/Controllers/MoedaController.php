@@ -38,7 +38,7 @@ class MoedaController extends Controller
         $repository->create(auth()->user(), [
             'moeda_origem' => strtoupper($result['moeda_origem']),
             'moeda_destino' => strtoupper($result['moeda_destino']),
-            'valor_consulta' => $result['valor'],
+            'valor_origem' => $result['valor'],
             'valor_convertido' => $result['valor_convertido'],
             'taxa_cambio' => $result['taxa'],
             'data_consulta' => $result['data_consulta'],
