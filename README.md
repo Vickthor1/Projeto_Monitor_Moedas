@@ -14,7 +14,7 @@ Aplicação Laravel para monitoramento e histórico de conversões de moedas int
 ![Histórico](docs/images/Histórico.png)
 
 ### Perfil
-![Perfil](docs/images/perfil.png)
+![Perfil](docs/images/Perfil.png)
 
 ## Tecnologias usadas
 - Laravel (projeto atual compatível com PHP 8.3)
