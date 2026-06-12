@@ -3,12 +3,12 @@
 namespace App\Repositories;
 
 use App\Models\HistoricoConsulta;
-use App\Models\Usuario;
+use App\Models\User;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class HistoricoConsultaRepository
 {
-    public function paginateByUsuario(Usuario $usuario, array $filters = []): LengthAwarePaginator
+    public function paginateByUsuario(User $usuario, array $filters = []): LengthAwarePaginator
     {
         $query = HistoricoConsulta::where('usuario_id', $usuario->id);
 
@@ -30,12 +30,12 @@ class HistoricoConsultaRepository
         return $query->orderBy($sortField, $sortDirection)->paginate(10)->withQueryString();
     }
 
-    public function create(Usuario $usuario, array $data): HistoricoConsulta
+    public function create(User $usuario, array $data): HistoricoConsulta
     {
         return $usuario->historicoConsultas()->create($data);
     }
 
-    public function getDashboardData(Usuario $usuario): array
+    public function getDashboardData(User $usuario): array
     {
         $totalConsultas = $usuario->historicoConsultas()->count();
         $lastConsulta = $usuario->historicoConsultas()->latest('data_consulta')->first();
