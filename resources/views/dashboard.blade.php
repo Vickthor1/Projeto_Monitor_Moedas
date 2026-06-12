@@ -70,7 +70,7 @@
                     <div class="mt-5 grid gap-4 sm:grid-cols-2">
                         <div class="rounded-3xl bg-slate-950/80 p-4">
                             <p class="text-xs uppercase tracking-[0.3em] text-slate-500">Consultas Hoje</p>
-                            <p class="mt-3 text-3xl font-semibold text-white">{{ \\App\Models\HistoricoConsulta::whereDate('data_consulta', today())->count() }}</p>
+                            <p class="mt-3 text-3xl font-semibold text-white">{{ $summary['consultas_today'] }}</p>
                         </div>
                         <div class="rounded-3xl bg-slate-950/80 p-4">
                             <p class="text-xs uppercase tracking-[0.3em] text-slate-500">Taxa média</p>
