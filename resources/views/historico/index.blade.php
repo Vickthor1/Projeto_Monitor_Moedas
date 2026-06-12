@@ -27,6 +27,16 @@
                     <h2 class="text-2xl font-semibold text-white">Resultados de conversão</h2>
                 </div>
                 @php
+            $symbols = [
+                'BRL' => 'R$',
+                'USD' => 'US$',
+                'EUR' => '€',
+                'GBP' => '£',
+                'JPY' => '¥',
+                'AUD' => 'A$',
+                'CAD' => 'C$',];
+                @endphp
+                @php
                     $currentField = $filters['sort_field'] ?? 'data_consulta';
                     $currentDirection = $filters['sort_direction'] ?? 'desc';
                     $nextDirection = $currentDirection === 'asc' ? 'desc' : 'asc';
@@ -64,10 +74,10 @@
                             <tr>
                                 <td>{{ optional($registro->data_consulta)->format('d/m/Y H:i') ?? '—' }}</td>
                                 <td><span class="table-chip">{{ $registro->moeda_origem ?? '—' }}</span></td>
-                                <td><span class="table-chip">{{ $registro->moeda_destino ?? '—' }}</span></td>
-                                <td>R$ {{ number_format($registro->valor_origem ?? 0, 2, ',', '.') }}</td>
+                                <td><span class="table-chip">{{ $symbols[$registro->moeda_destino] ?? $registro->moeda_destino }}</span></td>
+                                <td>{{ number_format($registro->valor_origem ?? 0, 2, ',', '.') }}</td>
                                 <td>{{ number_format($registro->taxa_cambio ?? 0, 6, ',', '.') }}</td>
-                                <td>R$ {{ number_format($registro->valor_convertido ?? 0, 2, ',', '.') }}</td>
+                                <td>{{ number_format($registro->valor_convertido ?? 0, 2, ',', '.') }}</td>
                             </tr>
                         @empty
                             <tr>

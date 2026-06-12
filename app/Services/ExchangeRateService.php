@@ -54,9 +54,10 @@ class ExchangeRateService
                 throw new RuntimeException('ExchangeRate API key não configurada. Contate o administrador.');
             }
 
-            $response = Http::timeout(10)
-                ->retry(3, 200)
-                ->get("{$this->baseUrl}/{$this->apiKey}/latest/{$base}");
+            $response = Http::withoutVerifying()
+    ->timeout(10)
+    ->retry(3, 200)
+    ->get("{$this->baseUrl}/{$this->apiKey}/latest/{$base}");
 
             if (! $response->successful()) {
                 Log::error('Falha ao consultar ExchangeRate API', [
