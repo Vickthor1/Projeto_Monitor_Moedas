@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Usuario;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -10,6 +11,8 @@ class HistoricoConsulta extends Model
     use HasFactory;
 
     protected $table = 'historico_consultas';
+
+    public $timestamps = false;
 
     protected $fillable = [
         'usuario_id',
@@ -23,9 +26,9 @@ class HistoricoConsulta extends Model
     ];
 
     protected $casts = [
-        'valor_consulta' => 'decimal:6',
-        'valor_convertido' => 'decimal:6',
-        'taxa_cambio' => 'decimal:10',
+        'valor_consulta' => 'decimal:2',
+        'valor_convertido' => 'decimal:2',
+        'taxa_cambio' => 'decimal:8',
         'data_consulta' => 'datetime',
         'created_at' => 'datetime',
     ];
