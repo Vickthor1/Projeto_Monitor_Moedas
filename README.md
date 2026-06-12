@@ -60,6 +60,6 @@ php artisan serve
 ```
 
 ## Observações
-- Não foram utilizadas migrations. O banco é criado manualmente pelo script `database/banco.sql`.
+- Não execute `php artisan migrate` ou outras migrations. O banco de dados deve ser criado exclusivamente com `database/banco.sql`.
 - O serviço `ExchangeRateService` faz cache de consultas por 5 minutos e registra logs de requisições.
 - Use o formulário de `Consultar Moedas` para gerar consultas e popular o histórico.

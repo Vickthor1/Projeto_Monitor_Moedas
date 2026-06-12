@@ -41,7 +41,13 @@
                 </div>
 
                 <div class="mt-6 h-[320px] sm:h-[380px]">
-                    <canvas id="dashboardChart" class="h-full w-full"></canvas>
+                    @if(empty($summary['chart_labels']))
+                        <div class="flex h-full items-center justify-center rounded-[1.75rem] border border-dashed border-white/10 bg-slate-950/80 p-6 text-center text-slate-400">
+                            <p>Nenhuma consulta nos últimos 7 dias. Faça uma conversão para ver o gráfico.</p>
+                        </div>
+                    @else
+                        <canvas id="dashboardChart" class="h-full w-full"></canvas>
+                    @endif
                 </div>
             </section>
         </div>
@@ -75,42 +81,47 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        const labels = @json($summary['chart_labels']);
-        const values = @json($summary['chart_totals']);
+    @if(!empty($summary['chart_labels']))
+        <script>
+            const labels = @json($summary['chart_labels']);
+            const values = @json($summary['chart_totals']);
+            const chartElement = document.getElementById('dashboardChart');
 
-        new Chart(document.getElementById('dashboardChart'), {
-            type: 'line',
-            data: {
-                labels,
-                datasets: [{
-                    label: 'Consultas',
-                    data: values,
-                    borderColor: 'rgba(0, 212, 255, 1)',
-                    backgroundColor: 'rgba(0, 212, 255, 0.16)',
-                    fill: true,
-                    tension: 0.28,
-                    pointRadius: 4,
-                    pointBackgroundColor: 'rgba(0, 212, 255, 1)',
-                }],
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { display: false },
-                },
-                scales: {
-                    x: {
-                        grid: { display: false },
-                        ticks: { color: '#94a3b8' },
+            if (chartElement && typeof Chart !== 'undefined') {
+                new Chart(chartElement, {
+                    type: 'line',
+                    data: {
+                        labels,
+                        datasets: [{
+                            label: 'Consultas',
+                            data: values,
+                            borderColor: 'rgba(0, 212, 255, 1)',
+                            backgroundColor: 'rgba(0, 212, 255, 0.16)',
+                            fill: true,
+                            tension: 0.28,
+                            pointRadius: 4,
+                            pointBackgroundColor: 'rgba(0, 212, 255, 1)',
+                        }],
                     },
-                    y: {
-                        grid: { color: 'rgba(148, 163, 184, 0.12)' },
-                        ticks: { color: '#94a3b8', beginAtZero: true },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                        },
+                        scales: {
+                            x: {
+                                grid: { display: false },
+                                ticks: { color: '#94a3b8' },
+                            },
+                            y: {
+                                grid: { color: 'rgba(148, 163, 184, 0.12)' },
+                                ticks: { color: '#94a3b8', beginAtZero: true },
+                            },
+                        },
                     },
-                },
-            },
-        });
-    </script>
+                });
+            }
+        </script>
+    @endif
 @endsection

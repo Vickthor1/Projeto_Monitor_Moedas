@@ -26,9 +26,24 @@
                     <p class="metric-label">Lista</p>
                     <h2 class="text-2xl font-semibold text-white">Resultados de conversão</h2>
                 </div>
+                @php
+                    $currentField = $filters['sort_field'] ?? 'data_consulta';
+                    $currentDirection = $filters['sort_direction'] ?? 'desc';
+                    $nextDirection = $currentDirection === 'asc' ? 'desc' : 'asc';
+                @endphp
                 <div class="flex flex-wrap gap-3">
-                    <a href="{{ route('historico.index', array_merge(request()->query(), ['sort_field' => 'data_consulta', 'sort_direction' => $filters['sort_direction'] === 'asc' ? 'desc' : 'asc'])) }}" class="btn-ghost">Data</a>
-                    <a href="{{ route('historico.index', array_merge(request()->query(), ['sort_field' => 'valor_origem', 'sort_direction' => $filters['sort_direction'] === 'asc' ? 'desc' : 'asc'])) }}" class="btn-ghost">Valor</a>
+                    <a href="{{ route('historico.index', array_merge(request()->query(), ['sort_field' => 'data_consulta', 'sort_direction' => $currentField === 'data_consulta' ? $nextDirection : 'desc'])) }}" class="btn-ghost {{ $currentField === 'data_consulta' ? 'bg-slate-900 text-white shadow-lg' : '' }}">
+                        Data
+                        @if($currentField === 'data_consulta')
+                            <span class="ml-2 text-slate-400">{{ $currentDirection === 'asc' ? '↑' : '↓' }}</span>
+                        @endif
+                    </a>
+                    <a href="{{ route('historico.index', array_merge(request()->query(), ['sort_field' => 'valor_origem', 'sort_direction' => $currentField === 'valor_origem' ? $nextDirection : 'desc'])) }}" class="btn-ghost {{ $currentField === 'valor_origem' ? 'bg-slate-900 text-white shadow-lg' : '' }}">
+                        Valor
+                        @if($currentField === 'valor_origem')
+                            <span class="ml-2 text-slate-400">{{ $currentDirection === 'asc' ? '↑' : '↓' }}</span>
+                        @endif
+                    </a>
                 </div>
             </div>
 
@@ -47,12 +62,12 @@
                     <tbody>
                         @forelse($historico as $registro)
                             <tr>
-                                <td>{{ $registro->data_consulta->format('d/m/Y H:i') }}</td>
-                                <td><span class="table-chip">{{ $registro->moeda_origem }}</span></td>
-                                <td><span class="table-chip">{{ $registro->moeda_destino }}</span></td>
-                                <td>R$ {{ number_format($registro->valor_origem, 2, ',', '.') }}</td>
-                                <td>{{ number_format($registro->taxa_cambio, 6, ',', '.') }}</td>
-                                <td>R$ {{ number_format($registro->valor_convertido, 2, ',', '.') }}</td>
+                                <td>{{ optional($registro->data_consulta)->format('d/m/Y H:i') ?? '—' }}</td>
+                                <td><span class="table-chip">{{ $registro->moeda_origem ?? '—' }}</span></td>
+                                <td><span class="table-chip">{{ $registro->moeda_destino ?? '—' }}</span></td>
+                                <td>R$ {{ number_format($registro->valor_origem ?? 0, 2, ',', '.') }}</td>
+                                <td>{{ number_format($registro->taxa_cambio ?? 0, 6, ',', '.') }}</td>
+                                <td>R$ {{ number_format($registro->valor_convertido ?? 0, 2, ',', '.') }}</td>
                             </tr>
                         @empty
                             <tr>

@@ -34,6 +34,12 @@ class DashboardService
         try {
             $mainRate = $this->exchangeRateService->convert($mainRatePair['origem'], $mainRatePair['destino'], 1);
         } catch (Throwable $e) {
+            \Log::warning('Falha ao buscar taxa principal para dashboard', [
+                'user_id' => optional($usuario)->id,
+                'origem' => $mainRatePair['origem'],
+                'destino' => $mainRatePair['destino'],
+                'error' => $e->getMessage(),
+            ]);
             $mainRate = null;
         }
 

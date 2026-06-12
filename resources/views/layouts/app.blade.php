@@ -43,7 +43,7 @@
 
             <div class="sidebar-footer">
                 <p class="text-xs uppercase tracking-[0.25em] text-slate-500">Conectado como</p>
-                <p class="mt-2 font-semibold text-white">{{ auth()->user()->nome }}</p>
+                <p class="mt-2 font-semibold text-white">{{ optional(auth()->user())->nome ?? 'Usuário' }}</p>
             </div>
         </aside>
 

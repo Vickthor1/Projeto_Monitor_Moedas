@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Repositories\HistoricoConsultaRepository;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\View\View;
 
 class HistoricoController extends Controller
@@ -17,7 +18,19 @@ class HistoricoController extends Controller
             'sort_direction' => $request->query('sort_direction', 'desc'),
         ];
 
-        $historico = $repository->paginateByUsuario($usuario, $filters);
+        try {
+            $historico = $repository->paginateByUsuario($usuario, $filters);
+        } catch (\Throwable $e) {
+            \Log::error('Erro ao carregar histórico de consultas', [
+                'user_id' => optional($usuario)->id,
+                'error' => $e->getMessage(),
+            ]);
+
+            $historico = new LengthAwarePaginator([], 0, 10, 1, [
+                'path' => $request->url(),
+                'query' => $request->query(),
+            ]);
+        }
 
         return view('historico.index', [
             'historico' => $historico,

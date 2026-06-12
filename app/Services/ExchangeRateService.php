@@ -15,17 +15,17 @@ class ExchangeRateService
     public function __construct()
     {
         $this->apiKey = config('services.exchangerate.key');
-
-        if (empty($this->apiKey)) {
-            throw new RuntimeException('ExchangeRate API key não configurada. Adicione EXCHANGERATE_API_KEY no .env');
-        }
     }
 
     public function convert(string $origem, string $destino, float $valor): array
     {
+        if ($valor <= 0) {
+            throw new RuntimeException('O valor para conversão deve ser maior que zero.');
+        }
+
         $rates = $this->getRates($origem);
 
-        if (!isset($rates['conversion_rates'][$destino])) {
+        if (!is_array($rates) || !isset($rates['conversion_rates'][$destino])) {
             throw new RuntimeException("Taxa não encontrada para {$origem} -> {$destino}");
         }
 
@@ -49,8 +49,13 @@ class ExchangeRateService
         $base = strtoupper($base);
 
         return Cache::remember("exchange_rate_{$base}", now()->addMinutes(5), function () use ($base) {
+            if (empty($this->apiKey)) {
+                Log::error('ExchangeRate API key não configurada');
+                throw new RuntimeException('ExchangeRate API key não configurada. Contate o administrador.');
+            }
+
             $response = Http::timeout(10)
-                ->retry(2, 100)
+                ->retry(3, 200)
                 ->get("{$this->baseUrl}/{$this->apiKey}/latest/{$base}");
 
             if (! $response->successful()) {
@@ -64,7 +69,7 @@ class ExchangeRateService
 
             $payload = $response->json();
 
-            if (empty($payload['result']) || $payload['result'] !== 'success') {
+            if (!is_array($payload) || empty($payload['result']) || $payload['result'] !== 'success' || empty($payload['conversion_rates']) || !is_array($payload['conversion_rates'])) {
                 Log::error('Resposta inválida da ExchangeRate API', ['payload' => $payload]);
                 throw new RuntimeException('Resposta inválida da ExchangeRate API.');
             }

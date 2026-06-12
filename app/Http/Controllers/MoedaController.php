@@ -30,8 +30,16 @@ class MoedaController extends Controller
         try {
             $result = $exchangeRateService->convert($data['moeda_origem'], $data['moeda_destino'], (float) $data['valor']);
         } catch (\Throwable $e) {
+            \Log::warning('Falha na ExchangeRate API durante consulta de moeda', [
+                'user_id' => optional(auth()->user())->id,
+                'origem' => $data['moeda_origem'] ?? null,
+                'destino' => $data['moeda_destino'] ?? null,
+                'valor' => $data['valor'] ?? null,
+                'error' => $e->getMessage(),
+            ]);
+
             return redirect()->route('moeda.index')
-                ->withErrors(['moeda_origem' => 'Não foi possível buscar a taxa de câmbio no momento. Tente novamente mais tarde.'])
+                ->withErrors(['consulta' => 'Não foi possível buscar a taxa de câmbio no momento. Tente novamente mais tarde.'])
                 ->withInput();
         }
 

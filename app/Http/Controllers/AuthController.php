@@ -24,6 +24,11 @@ class AuthController extends Controller
             return redirect()->intended(route('dashboard'));
         }
 
+        \Log::warning('Falha de autenticação', [
+            'email' => $validated['email'],
+            'ip' => $request->ip(),
+        ]);
+
         return back()->withErrors(['email' => 'E-mail ou senha inválidos'])->withInput();
     }
 

@@ -13,6 +13,12 @@
                 <span class="badge-currency">Segurança</span>
             </div>
 
+            @if(session('success'))
+                <div class="rounded-3xl border border-emerald-500/20 bg-emerald-500/10 p-4 text-sm text-emerald-100" role="status">
+                    {{ session('success') }}
+                </div>
+            @endif
+
             <form action="{{ route('perfil.update') }}" method="POST" class="mt-8 space-y-6" novalidate>
                 @csrf
                 @method('PUT')

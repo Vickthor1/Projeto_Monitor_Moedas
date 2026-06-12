@@ -39,7 +39,7 @@
                 <div class="grid gap-4 sm:grid-cols-[1fr_auto] items-end">
                     <label class="field-label">
                         <span>Valor para conversão</span>
-                        <input type="number" step="0.01" min="0" name="valor" value="{{ old('valor') }}" required class="input" aria-label="Valor para conversão" />
+                        <input type="number" step="0.01" min="0.01" name="valor" value="{{ old('valor') }}" required class="input" aria-label="Valor para conversão" />
                     </label>
                     <button id="swapButton" type="button" class="btn-ghost w-full sm:w-auto">Inverter</button>
                 </div>
@@ -71,6 +71,17 @@
                 @php $result = session('consulta_result'); @endphp
 
                 @if($result)
+                    @php
+                        $formattedDate = null;
+                        if (!empty($result['data_consulta'])) {
+                            if (is_string($result['data_consulta']) && strtotime($result['data_consulta']) !== false) {
+                                $formattedDate = \Carbon\Carbon::parse($result['data_consulta'])->format('d/m/Y H:i:s');
+                            } elseif (is_object($result['data_consulta']) && method_exists($result['data_consulta'], 'format')) {
+                                $formattedDate = $result['data_consulta']->format('d/m/Y H:i:s');
+                            }
+                        }
+                    @endphp
+
                     <div class="rounded-[1.75rem] bg-slate-950/85 p-5">
                         <p class="text-sm uppercase tracking-[0.3em] text-slate-400">Origem • Destino</p>
                         <p class="mt-2 text-2xl font-semibold text-white">{{ $result['moeda_origem'] }} → {{ $result['moeda_destino'] }}</p>
@@ -93,7 +104,7 @@
                             <span class="badge-up">+{{ number_format($result['taxa'], 6, ',', '.') }}</span>
                         </div>
                         <p class="mt-2 text-xl font-semibold text-white">1 {{ $result['moeda_origem'] }} = {{ number_format($result['taxa'], 6, ',', '.') }} {{ $result['moeda_destino'] }}</p>
-                        <p class="mt-3 text-sm text-slate-500">Atualizado em {{ $result['data_consulta']->format('d/m/Y H:i:s') }}</p>
+                        <p class="mt-3 text-sm text-slate-500">Atualizado em {{ $formattedDate ?? '—' }}</p>
                     </div>
                 @else
                     <div class="rounded-[1.75rem] bg-slate-950/85 p-5">
