@@ -68,9 +68,12 @@
             </div>
 
             <div class="mt-6 space-y-5">
-                @php $result = session('consulta_result'); @endphp
+                @php
+                    $result = session('consulta_result');
+                    $result = is_array($result) ? $result : [];
+                @endphp
 
-                @if($result)
+                @if(!empty($result))
                     @php
                         $formattedDate = null;
                         if (!empty($result['data_consulta'])) {

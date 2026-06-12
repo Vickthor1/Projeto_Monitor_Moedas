@@ -13,7 +13,7 @@
                 <form method="GET" action="{{ route('historico.index') }}" class="flex flex-col gap-3 sm:flex-row sm:items-center">
                     <label class="field-label">
                         <span>Pesquisar</span>
-                        <input type="search" name="search" value="{{ $filters['search'] }}" placeholder="Buscar por moeda ou valor" class="input" aria-label="Pesquisar histórico" />
+                        <input type="search" name="search" value="{{ $filters['search'] ?? '' }}" placeholder="Buscar por moeda ou valor" class="input" aria-label="Pesquisar histórico" />
                     </label>
                     <button type="submit" class="btn-primary">Buscar</button>
                 </form>
