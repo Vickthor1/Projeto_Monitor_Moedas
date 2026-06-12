@@ -2,6 +2,20 @@
 
 Aplicação Laravel para monitoramento e histórico de conversões de moedas internacionais.
 
+## 📸 Capturas de Tela
+
+### Dashboard
+![Dashboard](docs/images/dashboard.png)
+
+### Conversão
+![Conversão](docs/images/conversão.png)
+
+### Histórico
+![Histórico](docs/images/Histórico.png)
+
+### Perfil
+![Perfil](docs/images/perfil.png)
+
 ## Tecnologias usadas
 - Laravel (projeto atual compatível com PHP 8.3)
 - MySQL
