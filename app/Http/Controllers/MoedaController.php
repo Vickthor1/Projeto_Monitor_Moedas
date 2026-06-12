@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ConsultaMoedaRequest;
+use App\Models\Usuario;
 use App\Repositories\HistoricoConsultaRepository;
 use App\Services\ExchangeRateService;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class MoedaController extends Controller
@@ -20,10 +23,17 @@ class MoedaController extends Controller
         ]);
     }
 
-    public function consult(ConsultaMoedaRequest $request, ExchangeRateService $exchangeRateService, HistoricoConsultaRepository $repository): View
+    public function consult(ConsultaMoedaRequest $request, ExchangeRateService $exchangeRateService, HistoricoConsultaRepository $repository): RedirectResponse
     {
         $data = $request->validated();
-        $result = $exchangeRateService->convert($data['moeda_origem'], $data['moeda_destino'], (float) $data['valor']);
+
+        try {
+            $result = $exchangeRateService->convert($data['moeda_origem'], $data['moeda_destino'], (float) $data['valor']);
+        } catch (\Throwable $e) {
+            return redirect()->route('moeda.index')
+                ->withErrors(['moeda_origem' => 'Não foi possível buscar a taxa de câmbio no momento. Tente novamente mais tarde.'])
+                ->withInput();
+        }
 
         $repository->create(auth()->user(), [
             'moeda_origem' => strtoupper($result['moeda_origem']),
@@ -32,12 +42,8 @@ class MoedaController extends Controller
             'valor_convertido' => $result['valor_convertido'],
             'taxa_cambio' => $result['taxa'],
             'data_consulta' => $result['data_consulta'],
-            'created_at' => now(),
         ]);
 
-        return view('moeda.consulta', [
-            'currencies' => $this->currencies,
-            'result' => $result,
-        ]);
+        return redirect()->route('moeda.index')->with('consulta_result', $result);
     }
 }

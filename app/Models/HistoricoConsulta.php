@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\User;
+use App\Models\Usuario;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -12,8 +12,6 @@ class HistoricoConsulta extends Model
 
     protected $table = 'historico_consultas';
 
-    public $timestamps = false;
-
     protected $fillable = [
         'usuario_id',
         'moeda_origem',
@@ -22,7 +20,6 @@ class HistoricoConsulta extends Model
         'valor_convertido',
         'taxa_cambio',
         'data_consulta',
-        'created_at',
     ];
 
     protected $casts = [
@@ -31,10 +28,11 @@ class HistoricoConsulta extends Model
         'taxa_cambio' => 'decimal:8',
         'data_consulta' => 'datetime',
         'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
 
     public function usuario()
     {
-        return $this->belongsTo(User::class, 'usuario_id');
+        return $this->belongsTo(Usuario::class, 'usuario_id');
     }
 }

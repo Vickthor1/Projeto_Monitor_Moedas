@@ -50,14 +50,16 @@
                     </div>
                 @endif
 
-                <button type="submit" class="rounded-3xl bg-sky-500 px-6 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-400">Consultar taxa</button>
+                <button id="convertButton" type="submit" class="rounded-3xl bg-sky-500 px-6 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-400">Consultar taxa</button>
             </form>
         </section>
 
         <section class="rounded-[2rem] bg-slate-900/90 p-6 shadow-xl shadow-slate-950/30">
             <p class="text-sm uppercase tracking-[0.3em] text-slate-400">Resultado</p>
             <div class="mt-5 space-y-5">
-                @if(isset($result))
+                @php $result = session('consulta_result'); @endphp
+
+                @if($result)
                     <div class="rounded-[1.75rem] bg-slate-950/90 p-5">
                         <p class="text-sm text-slate-400">Origem • Destino</p>
                         <p class="mt-2 text-2xl font-semibold text-white">{{ $result['moeda_origem'] }} → {{ $result['moeda_destino'] }}</p>

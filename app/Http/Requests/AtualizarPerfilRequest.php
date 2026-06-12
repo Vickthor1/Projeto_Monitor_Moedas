@@ -15,7 +15,7 @@ class AtualizarPerfilRequest extends FormRequest
     {
         return [
             'nome' => ['required', 'string', 'max:100'],
-            'senha' => ['nullable', 'string', 'min:6', 'confirmed'],
+            'password' => ['nullable', 'string', 'min:6', 'confirmed'],
         ];
     }
 
@@ -23,8 +23,8 @@ class AtualizarPerfilRequest extends FormRequest
     {
         return [
             'nome.required' => 'O nome é obrigatório.',
-            'senha.min' => 'A nova senha precisa ter ao menos 6 caracteres.',
-            'senha.confirmed' => 'As senhas não conferem.',
+            'password.min' => 'A nova senha precisa ter ao menos 6 caracteres.',
+            'password.confirmed' => 'As senhas não conferem.',
         ];
     }
 }

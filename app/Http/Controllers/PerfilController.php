@@ -17,8 +17,8 @@ class PerfilController extends Controller
         $usuario = auth()->user();
         $usuario->nome = $request->input('nome');
 
-        if ($request->filled('senha')) {
-            $usuario->senha = $request->input('senha');
+        if ($request->filled('password')) {
+            $usuario->password = $request->input('password');
         }
 
         $usuario->save();

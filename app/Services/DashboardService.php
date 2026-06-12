@@ -2,9 +2,8 @@
 
 namespace App\Services;
 
-use App\Models\User;
+use App\Models\Usuario;
 use App\Repositories\HistoricoConsultaRepository;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Throwable;
 
 class DashboardService
@@ -18,7 +17,7 @@ class DashboardService
         $this->exchangeRateService = $exchangeRateService;
     }
 
-    public function getDashboardData(User $usuario): array
+    public function getDashboardData(Usuario $usuario): array
     {
         $summary = $this->repository->getDashboardData($usuario);
 

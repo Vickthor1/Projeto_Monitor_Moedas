@@ -15,7 +15,7 @@ class LoginRequest extends FormRequest
     {
         return [
             'email' => ['required', 'email'],
-            'senha' => ['required', 'string'],
+            'password' => ['required', 'string'],
         ];
     }
 
@@ -24,7 +24,7 @@ class LoginRequest extends FormRequest
         return [
             'email.required' => 'O e-mail é obrigatório.',
             'email.email' => 'Informe um e-mail válido.',
-            'senha.required' => 'A senha é obrigatória.',
+            'password.required' => 'A senha é obrigatória.',
         ];
     }
 }

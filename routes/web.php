@@ -21,7 +21,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/consultar', [MoedaController::class, 'index'])->name('moeda.index');
-    Route::post('/consultar', [MoedaController::class, 'consult'])->name('moeda.consultar');
+    Route::post('/consultar', [MoedaController::class, 'consult'])->middleware('throttle:consulta-moeda')->name('moeda.consultar');
 
     Route::get('/historico', [HistoricoController::class, 'index'])->name('historico.index');
 

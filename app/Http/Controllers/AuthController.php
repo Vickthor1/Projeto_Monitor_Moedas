@@ -18,7 +18,7 @@ class AuthController extends Controller
     {
         $validated = $request->validated();
 
-        if (Auth::attempt(['email' => $validated['email'], 'password' => $validated['senha']], $request->boolean('remember'))) {
+        if (Auth::attempt(['email' => $validated['email'], 'password' => $validated['password']], $request->boolean('remember'))) {
             $request->session()->regenerate();
 
             return redirect()->intended(route('dashboard'));
